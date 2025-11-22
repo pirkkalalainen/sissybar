@@ -1,0 +1,83 @@
+% magazine.tex - Main magazine template with print marks
+% This template is designed for professional print production with:
+% - A4 page size with 5mm bleed
+% - Crop marks, bleed marks, registration marks
+% - CMYK color space (Fogra27L)
+% - Finnish language support
+
+\documentclass[
+    a4paper,
+    12pt,
+    twoside=false,
+    showtrims,              % Show crop marks
+]{memoir}
+
+%% Page Setup with Bleed and Trim Marks
+% A4 dimensions: 210mm x 297mm
+% With 5mm bleed on each side: 220mm x 307mm
+
+% Stock size (paper with bleed)
+\setstocksize{307mm}{220mm}
+
+% Trimmed size (final A4)
+\settrimmedsize{297mm}{210mm}{*}
+
+% Trim marks offset (5mm bleed)
+\settrims{5mm}{5mm}
+
+% Text block and margins (matching Scribus settings)
+% Left/Right margins: 36.85pt ≈ 13mm
+% Top margin: 56.693pt ≈ 20mm
+% Bottom margin: 56.693pt ≈ 20mm
+\setlrmarginsandblock{13mm}{13mm}{*}
+\setulmarginsandblock{20mm}{20mm}{*}
+
+% Column settings for two-column layout
+\settypeblocksize{*}{*}{1.0}
+
+% Apply the layout
+\checkandfixthelayout
+
+% Trim marks style
+\trimFrame
+
+%% Import shared preamble
+\input{../templates/preamble.tex}
+
+%% Magazine-specific settings
+
+% Remove chapter/section numbering for magazine style
+\setcounter{secnumdepth}{0}
+
+% No page numbers on first page of articles
+\aliaspagestyle{chapter}{empty}
+
+%% Begin Document
+\begin{document}
+
+% Front matter (if needed)
+\frontmatter
+
+% Note: Individual articles will be included here during build
+% The build script will generate the article includes
+
+% Main content
+\mainmatter
+
+% Articles are included by build script
+% Placeholder for article includes:
+% \input{processed/articles/01_kansi.tex}
+% \input{processed/articles/02_toimihenkilot.tex}
+% etc.
+
+% Example structure (will be auto-generated):
+% \clearpage
+% \section{Article Title}
+% \begin{multicols}{2}
+% Article content here...
+% \end{multicols}
+
+% Back matter (if needed)
+\backmatter
+
+\end{document}

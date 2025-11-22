@@ -1,0 +1,70 @@
+% 2_column_article.tex - Two-column article template
+% This template provides a two-column layout for magazine articles
+% Usage: Copy to issue directory and customize, or use as \input
+
+\documentclass[
+    a4paper,
+    12pt,
+    twoside=false,
+    showtrims,
+]{memoir}
+
+% Stock and trim setup
+\setstocksize{307mm}{220mm}
+\settrimmedsize{297mm}{210mm}{*}
+\settrims{5mm}{5mm}
+\setlrmarginsandblock{13mm}{13mm}{*}
+\setulmarginsandblock{20mm}{20mm}{*}
+\settypeblocksize{*}{*}{1.0}
+\checkandfixthelayout
+\trimFrame
+
+% Import shared settings
+\input{../templates/preamble.tex}
+
+% Remove section numbering
+\setcounter{secnumdepth}{0}
+
+\begin{document}
+
+%% Article Title
+% Replace with actual article title
+\section{Article Title Here}
+
+%% Two-column layout begins
+\begin{multicols}{2}
+
+% Article introduction or first paragraph
+% Lorem ipsum dolor sit amet, consectetur adipiscing elit...
+
+% Include converted article content
+% \input{processed/articles/article_name.tex}
+
+% Or paste/write content directly:
+
+\leipis{
+This is body text in the "Leipis" style (10pt, justified).
+Replace this with your article content.
+}
+
+% Example: Insert an image
+% \onefig[0.9]{image_name.pdf}{Caption text here}
+
+% Example: Insert a two-column spanning image
+% \end{multicols}
+% \twocolumnfig[0.8]{large_image.pdf}{Wide image caption}
+% \begin{multicols}{2}
+
+\leipis{
+Continue article text here. The two-column layout provides
+better readability for magazine-style content.
+}
+
+% More content...
+
+\end{multicols}
+%% End of two-column layout
+
+\clearpage  % Start next article on new page
+
+\end{document}

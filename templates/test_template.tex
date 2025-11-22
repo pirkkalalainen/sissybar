@@ -1,0 +1,103 @@
+% test_template.tex - Test document to verify print marks and layout
+% Compile with: /Library/TeX/texbin/lualatex test_template.tex
+
+\documentclass[
+    a4paper,
+    12pt,
+    showtrims,
+]{memoir}
+
+% Page Setup
+\setstocksize{307mm}{220mm}
+\settrimmedsize{297mm}{210mm}{*}
+\settrims{5mm}{5mm}
+\setlrmarginsandblock{13mm}{13mm}{*}
+\setulmarginsandblock{20mm}{20mm}{*}
+\settypeblocksize{*}{*}{1.0}
+\checkandfixthelayout
+\trimFrame
+
+% Minimal packages for testing
+\usepackage[finnish]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{helvet}
+\renewcommand{\familydefault}{\sfdefault}
+\usepackage{graphicx}
+\usepackage{multicol}
+\usepackage[cmyk]{xcolor}
+
+% Headers/footers
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[C]{\textbf{SISSYBAR} Test}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}
+
+\setcounter{secnumdepth}{0}
+
+\begin{document}
+
+\section{Test Page - Sissybar Magazine Template}
+
+This is a test document to verify:
+\begin{itemize}
+    \item Print marks (crop marks, registration marks)
+    \item A4 page with 5mm bleed
+    \item CMYK color space
+    \item Finnish language support
+    \item Arial/Helvetica fonts
+    \item Two-column layout
+\end{itemize}
+
+\begin{multicols}{2}
+
+\subsection{Testi suomeksi}
+
+Tämä on testiartikkeli suomenkielisellä sisällöllä. Tavutus toimii oikein
+suomen kielen sääntöjen mukaisesti. Tässä on pitkä sana testaamista varten:
+moottoripyöräkerho.
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod
+tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.
+
+\subsection{Two Column Test}
+
+This column layout matches the magazine design. The text flows naturally
+between columns, and images can be placed within columns or span across both.
+
+The template includes:
+\begin{itemize}
+    \item Proper margins (13mm left/right)
+    \item Consistent spacing
+    \item Print-ready output
+\end{itemize}
+
+\columnbreak
+
+\subsection{Color Test}
+
+\textcolor{cyan}{Cyan text in CMYK}
+
+\textcolor{magenta}{Magenta text in CMYK}
+
+\textcolor{yellow}{Yellow text in CMYK}
+
+\textcolor{black}{Black text in CMYK}
+
+\subsection{More Content}
+
+Additional test content to fill the page and verify layout. The margins,
+bleeds, and crop marks should all be visible when this PDF is opened.
+
+\end{multicols}
+
+\vfill
+
+\textbf{Template Status:} Ready for production
+
+\textbf{Generated:} \today
+
+\end{document}

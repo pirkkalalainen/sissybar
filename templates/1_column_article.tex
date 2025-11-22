@@ -1,0 +1,54 @@
+% 1_column_article.tex - Single-column article template
+% This template provides a single-column layout for magazine articles
+% Useful for: covers, short announcements, full-width content
+
+\documentclass[
+    a4paper,
+    12pt,
+    twoside=false,
+    showtrims,
+]{memoir}
+
+% Stock and trim setup
+\setstocksize{307mm}{220mm}
+\settrimmedsize{297mm}{210mm}{*}
+\settrims{5mm}{5mm}
+\setlrmarginsandblock{13mm}{13mm}{*}
+\setulmarginsandblock{20mm}{20mm}{*}
+\settypeblocksize{*}{*}{1.0}
+\checkandfixthelayout
+\trimFrame
+
+% Import shared settings
+\input{../templates/preamble.tex}
+
+% Remove section numbering
+\setcounter{secnumdepth}{0}
+
+\begin{document}
+
+%% Article Title
+% Replace with actual article title
+\section{Article Title Here}
+
+% Single column content
+\leipis{
+This is body text in the "Leipis" style (10pt, justified).
+Single column layout is useful for covers, introductions,
+or when you need full page width for content.
+}
+
+% Include converted article content
+% \input{processed/articles/article_name.tex}
+
+% Example: Insert a full-width image
+% \onefig[0.8]{image_name.pdf}{Caption text here}
+
+\leipis{
+Continue with more content. Use this template for articles
+that don't need multi-column layout.
+}
+
+\clearpage  % Start next article on new page
+
+\end{document}
