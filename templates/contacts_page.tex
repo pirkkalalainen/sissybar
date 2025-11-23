@@ -1,0 +1,149 @@
+% contacts_page.tex - Template for club contact information page
+% This template creates a page with board members, governors, and officials
+%
+% Usage:
+%   1. Copy this template to your issue directory
+%   2. Copy contacts_data.tex and edit with current year's contact info
+%   3. Compile this file to generate the contacts page
+%
+% The contact data is in a separate file for easy annual updates
+
+\documentclass[a4paper,12pt]{article}
+
+%% Page Setup with Bleed and Print Marks
+% Final A4: 210mm x 297mm
+% With bleed: 220mm x 307mm (5mm each side)
+% With marks: 244mm x 331mm (12mm mark space each side)
+
+\usepackage[
+    paperwidth=244mm,      % A4 + bleed + mark space (220mm + 24mm)
+    paperheight=331mm,     % A4 + bleed + mark space (307mm + 24mm)
+    left=30mm,             % 12mm mark space + 13mm margin + 5mm bleed
+    right=30mm,
+    top=22mm,              % 12mm mark space + 5mm margin + 5mm bleed
+    bottom=37mm,
+    includeheadfoot
+]{geometry}
+
+%% TikZ for drawing crop marks and border
+\usepackage{tikz}
+\usepackage{eso-pic}
+
+% Add professional crop and bleed marks
+\AddToShipoutPictureBG{%
+  \begin{tikzpicture}[remember picture, overlay]
+    % Define trim box (A4 final size) - 17mm from page edge (12mm marks + 5mm bleed)
+    \coordinate (TL) at ([xshift=17mm,yshift=-17mm]current page.north west);
+    \coordinate (TR) at ([xshift=-17mm,yshift=-17mm]current page.north east);
+    \coordinate (BL) at ([xshift=17mm,yshift=17mm]current page.south west);
+    \coordinate (BR) at ([xshift=-17mm,yshift=17mm]current page.south east);
+    \coordinate (TC) at ([yshift=-17mm]current page.north);
+    \coordinate (BC) at ([yshift=17mm]current page.south);
+    \coordinate (LC) at ([xshift=17mm]current page.west);
+    \coordinate (RC) at ([xshift=-17mm]current page.east);
+
+    % Define bleed box (A4 + 5mm bleed) - 12mm from page edge
+    \coordinate (BL-TL) at ([xshift=12mm,yshift=-12mm]current page.north west);
+    \coordinate (BL-TR) at ([xshift=-12mm,yshift=-12mm]current page.north east);
+    \coordinate (BL-BL) at ([xshift=12mm,yshift=12mm]current page.south west);
+    \coordinate (BL-BR) at ([xshift=-12mm,yshift=12mm]current page.south east);
+
+    % CROP MARKS - Inner marks (2mm from trim, 10mm long)
+    % Top left
+    \draw[line width=0.5pt] ([xshift=-2mm]TL) -- ([xshift=-12mm]TL);
+    \draw[line width=0.5pt] ([yshift=2mm]TL) -- ([yshift=12mm]TL);
+    % Top right
+    \draw[line width=0.5pt] ([xshift=2mm]TR) -- ([xshift=12mm]TR);
+    \draw[line width=0.5pt] ([yshift=2mm]TR) -- ([yshift=12mm]TR);
+    % Bottom left
+    \draw[line width=0.5pt] ([xshift=-2mm]BL) -- ([xshift=-12mm]BL);
+    \draw[line width=0.5pt] ([yshift=-2mm]BL) -- ([yshift=-12mm]BL);
+    % Bottom right
+    \draw[line width=0.5pt] ([xshift=2mm]BR) -- ([xshift=12mm]BR);
+    \draw[line width=0.5pt] ([yshift=-2mm]BR) -- ([yshift=-12mm]BR);
+
+    % BLEED MARKS - At bleed box edge (12mm from page edge)
+    % Top left
+    \draw[line width=0.5pt] ([xshift=-2mm]BL-TL) -- ([xshift=-12mm]BL-TL);
+    \draw[line width=0.5pt] ([yshift=2mm]BL-TL) -- ([yshift=12mm]BL-TL);
+    % Top right
+    \draw[line width=0.5pt] ([xshift=2mm]BL-TR) -- ([xshift=12mm]BL-TR);
+    \draw[line width=0.5pt] ([yshift=2mm]BL-TR) -- ([yshift=12mm]BL-TR);
+    % Bottom left
+    \draw[line width=0.5pt] ([xshift=-2mm]BL-BL) -- ([xshift=-12mm]BL-BL);
+    \draw[line width=0.5pt] ([yshift=-2mm]BL-BL) -- ([yshift=-12mm]BL-BL);
+    % Bottom right
+    \draw[line width=0.5pt] ([xshift=2mm]BL-BR) -- ([xshift=12mm]BL-BR);
+    \draw[line width=0.5pt] ([yshift=-2mm]BL-BR) -- ([yshift=-12mm]BL-BR);
+
+    % REGISTRATION MARKS - All 4 sides (10mm from trim edge)
+    % Top center
+    \draw[line width=0.5pt] ([yshift=10mm]TC) circle (3mm);
+    \draw[line width=0.5pt] ([xshift=-5mm,yshift=10mm]TC) -- ([xshift=5mm,yshift=10mm]TC);
+    \draw[line width=0.5pt] ([yshift=10mm+5mm]TC) -- ([yshift=10mm-5mm]TC);
+    % Bottom center
+    \draw[line width=0.5pt] ([yshift=-10mm]BC) circle (3mm);
+    \draw[line width=0.5pt] ([xshift=-5mm,yshift=-10mm]BC) -- ([xshift=5mm,yshift=-10mm]BC);
+    \draw[line width=0.5pt] ([yshift=-10mm+5mm]BC) -- ([yshift=-10mm-5mm]BC);
+    % Left center
+    \draw[line width=0.5pt] ([xshift=-10mm]LC) circle (3mm);
+    \draw[line width=0.5pt] ([xshift=-10mm-5mm]LC) -- ([xshift=-10mm+5mm]LC);
+    \draw[line width=0.5pt] ([xshift=-10mm,yshift=5mm]LC) -- ([xshift=-10mm,yshift=-5mm]LC);
+    % Right center
+    \draw[line width=0.5pt] ([xshift=10mm]RC) circle (3mm);
+    \draw[line width=0.5pt] ([xshift=10mm-5mm]RC) -- ([xshift=10mm+5mm]RC);
+    \draw[line width=0.5pt] ([xshift=10mm,yshift=5mm]RC) -- ([xshift=10mm,yshift=-5mm]RC);
+  \end{tikzpicture}%
+}
+
+% Import shared settings and styling
+\input{../../templates/preamble.tex}
+
+% Fix graphics paths for this directory location
+\graphicspath{{./}{../../assets/logos/}{../../assets/icons/}{./processed/images/}}
+
+% Remove section numbering
+\setcounter{secnumdepth}{0}
+
+% Define command for red border frame around content
+\newcommand{\contactframe}[1]{%
+    \begin{tikzpicture}
+        \node[draw=SissybarRed, line width=2pt, inner sep=10pt] {%
+            \begin{minipage}{0.9\textwidth}
+                #1
+            \end{minipage}
+        };
+    \end{tikzpicture}%
+}
+
+% Define command for contact table row
+\newcommand{\contactrow}[3]{%
+    #1 & #2 & #3 \\[1pt]
+}
+
+% Define command for section heading in contacts
+\newcommand{\contactsection}[1]{%
+    \textbf{#1} & & \\[3pt]
+}
+
+\begin{document}
+
+% Contact page with logo and information within red border frame
+\begin{center}
+\vspace{4pt}
+\contactframe{%
+    \begin{minipage}{0.9\textwidth}
+        % Club logo left-aligned at top
+        \noindent
+        \includegraphics[height=25mm]{YCCF_logo.pdf}\\[4pt]
+
+        % Contact information table
+        \begin{tabular}{@{}p{5.2cm}p{4cm}p{4.8cm}@{}}
+            % Include the contact data from separate file
+            \input{contacts_data.tex}
+        \end{tabular}
+    \end{minipage}
+}
+\end{center}
+
+\end{document}
