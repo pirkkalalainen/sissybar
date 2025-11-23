@@ -55,7 +55,7 @@
 
 %% Paragraph and Text Settings
 \setlength{\parindent}{0pt}          % No paragraph indentation
-\setlength{\parskip}{6pt}            % Space between paragraphs
+\setlength{\parskip}{2pt plus 1pt minus 1pt}  % Space between paragraphs (super tight)
 
 % Define paragraph styles matching Scribus
 \newcommand{\leipis}[1]{%            % Body text style
@@ -96,6 +96,13 @@
     labelsep=space,
 }
 
+%% Figure spacing - super tight, minimal white space around images
+\setlength{\intextsep}{3pt plus 1pt minus 1pt}      % Space above and below in-text floats
+\setlength{\textfloatsep}{3pt plus 1pt minus 1pt}   % Space between floats and text
+\setlength{\abovecaptionskip}{2pt}                   % Space between figure and caption
+\setlength{\belowcaptionskip}{0pt}                   % Space below caption
+\setlength{\floatsep}{3pt plus 1pt minus 1pt}        % Space between consecutive floats
+
 %% Line spacing
 \usepackage{setspace}
 \setstretch{1.2}                     % Slightly increased line spacing
@@ -103,12 +110,20 @@
 %% Section formatting
 \usepackage{titlesec}
 
-% Section titles - Arial Bold, larger size
+% Section titles - Centered, Red, Arial Bold, larger size with solid drop shadow
+\definecolor{SissybarRed}{RGB}{255,0,0}  % Define the Sissybar red color (pure saturated red)
+\usepackage{tikz}
+\newcommand{\dropshadow}[1]{%
+    \begin{tikzpicture}[baseline=(text.base)]
+        \node[text=black] at (0.02,-0.02) {\bfseries#1};
+        \node[text=SissybarRed] (text) at (0,0) {\bfseries#1};
+    \end{tikzpicture}%
+}
 \titleformat{\section}
-    {\normalfont\Large\bfseries}     % Format
+    {\normalfont\Large\bfseries\centering}     % Format: centered and bold
     {}                                % Label
     {0pt}                            % Sep
-    {}                               % Before code
+    {\dropshadow}                    % Before code - apply drop shadow
 
 \titleformat{\subsection}
     {\normalfont\large\bfseries}
@@ -151,6 +166,19 @@
         \includegraphics[width=#1\columnwidth]{#2}
         \caption{\kuvateksti{#3}}
     \end{figure}
+}
+
+% Wrapped figure - text flows around the image
+\newcommand{\wrapfig}[4][r]{%
+    % #1 = position (optional, default 'r' for right, use 'l' for left)
+    % #2 = width as fraction of columnwidth (e.g., 0.5)
+    % #3 = image filename
+    % #4 = caption
+    \begin{wrapfigure}{#1}{#2\columnwidth}
+        \centering
+        \includegraphics[width=#2\columnwidth]{#3}
+        \caption{\kuvateksti{#4}}
+    \end{wrapfigure}
 }
 
 %% Fix for Finnish language
