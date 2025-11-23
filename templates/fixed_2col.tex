@@ -1,29 +1,32 @@
-% 2_column_article.tex - Two-column article template
-% This template provides a two-column layout for magazine articles
-% Usage: Copy to issue directory and customize, or use as \input
+% Fixed 2-column template with proper crop marks
+% Based on Scribus output requirements
 
 \documentclass[a4paper,12pt]{article}
 
-%% Page Setup with Bleed and Print Marks
-% Final A4: 210mm x 297mm
-% With bleed: 220mm x 307mm (5mm each side)
-% With marks: 244mm x 331mm (12mm mark space each side)
-
+% Packages
 \usepackage[
     paperwidth=244mm,      % A4 + bleed + mark space (220mm + 24mm)
     paperheight=331mm,     % A4 + bleed + mark space (307mm + 24mm)
     left=30mm,             % 12mm mark space + 13mm margin + 5mm bleed
     right=30mm,
-    top=37mm,              % 12mm mark space + 20mm margin + 5mm bleed
+    top=22mm,              % 12mm mark space + 5mm margin + 5mm bleed
     bottom=37mm,
     includeheadfoot
 ]{geometry}
-
-%% TikZ for drawing crop marks
+\usepackage[finnish]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{helvet}
+\renewcommand{\familydefault}{\sfdefault}
+\usepackage{graphicx}
+\graphicspath{{../assets/logos/}{processed/images/}}
+\usepackage{multicol}
+\usepackage[cmyk]{xcolor}
+\usepackage{fancyhdr}
 \usepackage{tikz}
-\usepackage{eso-pic}
 
 % Add professional crop and bleed marks
+\usepackage{eso-pic}
 \AddToShipoutPictureBG{%
   \begin{tikzpicture}[remember picture, overlay]
     % Define trim box (A4 final size) - 17mm from page edge (12mm marks + 5mm bleed)
@@ -46,12 +49,15 @@
     % Top left
     \draw[line width=0.5pt] ([xshift=-2mm]TL) -- ([xshift=-12mm]TL);
     \draw[line width=0.5pt] ([yshift=2mm]TL) -- ([yshift=12mm]TL);
+
     % Top right
     \draw[line width=0.5pt] ([xshift=2mm]TR) -- ([xshift=12mm]TR);
     \draw[line width=0.5pt] ([yshift=2mm]TR) -- ([yshift=12mm]TR);
+
     % Bottom left
     \draw[line width=0.5pt] ([xshift=-2mm]BL) -- ([xshift=-12mm]BL);
     \draw[line width=0.5pt] ([yshift=-2mm]BL) -- ([yshift=-12mm]BL);
+
     % Bottom right
     \draw[line width=0.5pt] ([xshift=2mm]BR) -- ([xshift=12mm]BR);
     \draw[line width=0.5pt] ([yshift=-2mm]BR) -- ([yshift=-12mm]BR);
@@ -60,12 +66,15 @@
     % Top left
     \draw[line width=0.5pt] ([xshift=-2mm]BL-TL) -- ([xshift=-12mm]BL-TL);
     \draw[line width=0.5pt] ([yshift=2mm]BL-TL) -- ([yshift=12mm]BL-TL);
+
     % Top right
     \draw[line width=0.5pt] ([xshift=2mm]BL-TR) -- ([xshift=12mm]BL-TR);
     \draw[line width=0.5pt] ([yshift=2mm]BL-TR) -- ([yshift=12mm]BL-TR);
+
     % Bottom left
     \draw[line width=0.5pt] ([xshift=-2mm]BL-BL) -- ([xshift=-12mm]BL-BL);
     \draw[line width=0.5pt] ([yshift=-2mm]BL-BL) -- ([yshift=-12mm]BL-BL);
+
     % Bottom right
     \draw[line width=0.5pt] ([xshift=2mm]BL-BR) -- ([xshift=12mm]BL-BR);
     \draw[line width=0.5pt] ([yshift=-2mm]BL-BR) -- ([yshift=-12mm]BL-BR);
@@ -75,14 +84,17 @@
     \draw[line width=0.5pt] ([yshift=10mm]TC) circle (3mm);
     \draw[line width=0.5pt] ([xshift=-5mm,yshift=10mm]TC) -- ([xshift=5mm,yshift=10mm]TC);
     \draw[line width=0.5pt] ([yshift=10mm+5mm]TC) -- ([yshift=10mm-5mm]TC);
+
     % Bottom center
     \draw[line width=0.5pt] ([yshift=-10mm]BC) circle (3mm);
     \draw[line width=0.5pt] ([xshift=-5mm,yshift=-10mm]BC) -- ([xshift=5mm,yshift=-10mm]BC);
     \draw[line width=0.5pt] ([yshift=-10mm+5mm]BC) -- ([yshift=-10mm-5mm]BC);
+
     % Left center
     \draw[line width=0.5pt] ([xshift=-10mm]LC) circle (3mm);
     \draw[line width=0.5pt] ([xshift=-10mm-5mm]LC) -- ([xshift=-10mm+5mm]LC);
     \draw[line width=0.5pt] ([xshift=-10mm,yshift=5mm]LC) -- ([xshift=-10mm,yshift=-5mm]LC);
+
     % Right center
     \draw[line width=0.5pt] ([xshift=10mm]RC) circle (3mm);
     \draw[line width=0.5pt] ([xshift=10mm-5mm]RC) -- ([xshift=10mm+5mm]RC);
@@ -90,52 +102,61 @@
   \end{tikzpicture}%
 }
 
-% Import shared settings
-\input{../templates/preamble.tex}
+% Header and footer
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[C]{%
+    \raisebox{0pt}[\height][0pt]{%
+        \begin{minipage}{\textwidth}
+            \centering
+            \includegraphics[height=5mm]{Sissybar-teksti.pdf}\\[-12pt]
+            \rule{0.75\textwidth}{1pt}
+        \end{minipage}
+    }%
+}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}
+\setlength{\headheight}{8mm}
+\setlength{\headsep}{10mm}
+
+% Column settings
+\setlength{\columnsep}{5mm}
 
 % Remove section numbering
 \setcounter{secnumdepth}{0}
 
+% Paragraph settings
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt}
+
 \begin{document}
 
-%% Article Title
-% Replace with actual article title
-\section{Article Title Here}
+\section*{Test Article Title}
 
-%% Two-column layout begins
 \begin{multicols}{2}
 
-% Article introduction or first paragraph
-% Lorem ipsum dolor sit amet, consectetur adipiscing elit...
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
 
-% Include converted article content
-% \input{processed/articles/article_name.tex}
+Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
 
-% Or paste/write content directly:
+\textbf{Testi suomeksi:} Tämä on testiartikkeli. Moottoripyöräharrastus on hauskaa!
 
-\leipis{
-This is body text in the "Leipis" style (10pt, justified).
-Replace this with your article content.
-}
+Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
 
-% Example: Insert an image
-% \onefig[0.9]{image_name.pdf}{Caption text here}
+\columnbreak
 
-% Example: Insert a two-column spanning image
-% \end{multicols}
-% \twocolumnfig[0.8]{large_image.pdf}{Wide image caption}
-% \begin{multicols}{2}
+More content in the second column. This shows how text flows naturally between columns.
 
-\leipis{
-Continue article text here. The two-column layout provides
-better readability for magazine-style content.
-}
-
-% More content...
+The template now includes:
+\begin{itemize}
+\item Crop marks at corners (symmetric!)
+\item Registration marks (center crosshairs)
+\item 5mm bleed on all sides
+\item Sissybar header
+\item Page numbers
+\end{itemize}
 
 \end{multicols}
-%% End of two-column layout
-
-\clearpage  % Start next article on new page
 
 \end{document}

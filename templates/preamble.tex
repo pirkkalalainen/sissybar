@@ -35,9 +35,15 @@
 \pagestyle{fancy}
 \fancyhf{}                           % Clear default settings
 
-% Header - add Sissybar logo
+% Header - add Sissybar logo with underline
 \fancyhead[C]{%
-    \includegraphics[height=8mm]{Sissybar-teksti.pdf}%
+    \raisebox{0pt}[\height][0pt]{%
+        \begin{minipage}{\textwidth}
+            \centering
+            \includegraphics[height=5mm]{Sissybar-teksti.pdf}\\[-12pt]
+            \rule{0.75\textwidth}{1pt}
+        \end{minipage}
+    }%
 }
 
 % Footer - page number
