@@ -2,22 +2,93 @@
 % This template provides a single-column layout for magazine articles
 % Useful for: covers, short announcements, full-width content
 
-\documentclass[
-    a4paper,
-    12pt,
-    twoside=false,
-    showtrims,
-]{memoir}
+\documentclass[a4paper,12pt]{article}
 
-% Stock and trim setup
-\setstocksize{307mm}{220mm}
-\settrimmedsize{297mm}{210mm}{*}
-\settrims{5mm}{5mm}
-\setlrmarginsandblock{13mm}{13mm}{*}
-\setulmarginsandblock{20mm}{20mm}{*}
-\settypeblocksize{*}{*}{1.0}
-\checkandfixthelayout
-\trimFrame
+%% Page Setup with Bleed and Print Marks
+% Final A4: 210mm x 297mm
+% With bleed: 220mm x 307mm (5mm each side)
+% With marks: 244mm x 331mm (12mm mark space each side)
+
+\usepackage[
+    paperwidth=244mm,      % A4 + bleed + mark space (220mm + 24mm)
+    paperheight=331mm,     % A4 + bleed + mark space (307mm + 24mm)
+    left=30mm,             % 12mm mark space + 13mm margin + 5mm bleed
+    right=30mm,
+    top=37mm,              % 12mm mark space + 20mm margin + 5mm bleed
+    bottom=37mm,
+    includeheadfoot
+]{geometry}
+
+%% TikZ for drawing crop marks
+\usepackage{tikz}
+\usepackage{eso-pic}
+
+% Add professional crop and bleed marks
+\AddToShipoutPictureBG{%
+  \begin{tikzpicture}[remember picture, overlay]
+    % Define trim box (A4 final size) - 17mm from page edge (12mm marks + 5mm bleed)
+    \coordinate (TL) at ([xshift=17mm,yshift=-17mm]current page.north west);
+    \coordinate (TR) at ([xshift=-17mm,yshift=-17mm]current page.north east);
+    \coordinate (BL) at ([xshift=17mm,yshift=17mm]current page.south west);
+    \coordinate (BR) at ([xshift=-17mm,yshift=17mm]current page.south east);
+    \coordinate (TC) at ([yshift=-17mm]current page.north);
+    \coordinate (BC) at ([yshift=17mm]current page.south);
+    \coordinate (LC) at ([xshift=17mm]current page.west);
+    \coordinate (RC) at ([xshift=-17mm]current page.east);
+
+    % Define bleed box (A4 + 5mm bleed) - 12mm from page edge
+    \coordinate (BL-TL) at ([xshift=12mm,yshift=-12mm]current page.north west);
+    \coordinate (BL-TR) at ([xshift=-12mm,yshift=-12mm]current page.north east);
+    \coordinate (BL-BL) at ([xshift=12mm,yshift=12mm]current page.south west);
+    \coordinate (BL-BR) at ([xshift=-12mm,yshift=12mm]current page.south east);
+
+    % CROP MARKS - Inner marks (2mm from trim, 10mm long)
+    % Top left
+    \draw[line width=0.5pt] ([xshift=-2mm]TL) -- ([xshift=-12mm]TL);
+    \draw[line width=0.5pt] ([yshift=2mm]TL) -- ([yshift=12mm]TL);
+    % Top right
+    \draw[line width=0.5pt] ([xshift=2mm]TR) -- ([xshift=12mm]TR);
+    \draw[line width=0.5pt] ([yshift=2mm]TR) -- ([yshift=12mm]TR);
+    % Bottom left
+    \draw[line width=0.5pt] ([xshift=-2mm]BL) -- ([xshift=-12mm]BL);
+    \draw[line width=0.5pt] ([yshift=-2mm]BL) -- ([yshift=-12mm]BL);
+    % Bottom right
+    \draw[line width=0.5pt] ([xshift=2mm]BR) -- ([xshift=12mm]BR);
+    \draw[line width=0.5pt] ([yshift=-2mm]BR) -- ([yshift=-12mm]BR);
+
+    % BLEED MARKS - At bleed box edge (12mm from page edge)
+    % Top left
+    \draw[line width=0.5pt] ([xshift=-2mm]BL-TL) -- ([xshift=-12mm]BL-TL);
+    \draw[line width=0.5pt] ([yshift=2mm]BL-TL) -- ([yshift=12mm]BL-TL);
+    % Top right
+    \draw[line width=0.5pt] ([xshift=2mm]BL-TR) -- ([xshift=12mm]BL-TR);
+    \draw[line width=0.5pt] ([yshift=2mm]BL-TR) -- ([yshift=12mm]BL-TR);
+    % Bottom left
+    \draw[line width=0.5pt] ([xshift=-2mm]BL-BL) -- ([xshift=-12mm]BL-BL);
+    \draw[line width=0.5pt] ([yshift=-2mm]BL-BL) -- ([yshift=-12mm]BL-BL);
+    % Bottom right
+    \draw[line width=0.5pt] ([xshift=2mm]BL-BR) -- ([xshift=12mm]BL-BR);
+    \draw[line width=0.5pt] ([yshift=-2mm]BL-BR) -- ([yshift=-12mm]BL-BR);
+
+    % REGISTRATION MARKS - All 4 sides
+    % Top center
+    \draw[line width=0.5pt] ([yshift=2mm]TC) circle (3mm);
+    \draw[line width=0.5pt] ([xshift=-5mm,yshift=2mm]TC) -- ([xshift=5mm,yshift=2mm]TC);
+    \draw[line width=0.5pt] ([yshift=2mm+5mm]TC) -- ([yshift=2mm-5mm]TC);
+    % Bottom center
+    \draw[line width=0.5pt] ([yshift=-2mm]BC) circle (3mm);
+    \draw[line width=0.5pt] ([xshift=-5mm,yshift=-2mm]BC) -- ([xshift=5mm,yshift=-2mm]BC);
+    \draw[line width=0.5pt] ([yshift=-2mm+5mm]BC) -- ([yshift=-2mm-5mm]BC);
+    % Left center
+    \draw[line width=0.5pt] ([xshift=-2mm]LC) circle (3mm);
+    \draw[line width=0.5pt] ([xshift=-2mm-5mm]LC) -- ([xshift=-2mm+5mm]LC);
+    \draw[line width=0.5pt] ([xshift=-2mm,yshift=5mm]LC) -- ([xshift=-2mm,yshift=-5mm]LC);
+    % Right center
+    \draw[line width=0.5pt] ([xshift=2mm]RC) circle (3mm);
+    \draw[line width=0.5pt] ([xshift=2mm-5mm]RC) -- ([xshift=2mm+5mm]RC);
+    \draw[line width=0.5pt] ([xshift=2mm,yshift=5mm]RC) -- ([xshift=2mm,yshift=-5mm]RC);
+  \end{tikzpicture}%
+}
 
 % Import shared settings
 \input{../templates/preamble.tex}
