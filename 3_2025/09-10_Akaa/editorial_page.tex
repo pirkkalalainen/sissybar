@@ -1,0 +1,159 @@
+% editorial_page.tex - Template for editorial/masthead page (Pääkirjoitus)
+% This template creates the magazine's editorial page with publication info
+%
+% Usage:
+%   1. Copy this template to your issue directory
+%   2. Copy editorial_content.tex and editorial_info.tex
+%   3. Edit content files with current issue's editorial and info
+%   4. Compile this file to generate the editorial page
+
+\documentclass[a4paper,12pt]{article}
+
+%% Page Setup with Bleed and Print Marks
+\usepackage[
+    paperwidth=244mm,
+    paperheight=331mm,
+    left=30mm,
+    right=30mm,
+    top=22mm,
+    bottom=37mm,
+    includeheadfoot
+]{geometry}
+
+%% TikZ for drawing crop marks and colored boxes
+\usepackage{tikz}
+\usepackage{eso-pic}
+
+% Add professional crop and bleed marks
+\AddToShipoutPictureBG{%
+  \begin{tikzpicture}[remember picture, overlay]
+    % Define trim box (A4 final size) - 17mm from page edge (12mm marks + 5mm bleed)
+    \coordinate (TL) at ([xshift=17mm,yshift=-17mm]current page.north west);
+    \coordinate (TR) at ([xshift=-17mm,yshift=-17mm]current page.north east);
+    \coordinate (BL) at ([xshift=17mm,yshift=17mm]current page.south west);
+    \coordinate (BR) at ([xshift=-17mm,yshift=17mm]current page.south east);
+    \coordinate (TC) at ([yshift=-17mm]current page.north);
+    \coordinate (BC) at ([yshift=17mm]current page.south);
+    \coordinate (LC) at ([xshift=17mm]current page.west);
+    \coordinate (RC) at ([xshift=-17mm]current page.east);
+
+    % Define bleed box (A4 + 5mm bleed) - 12mm from page edge
+    \coordinate (BL-TL) at ([xshift=12mm,yshift=-12mm]current page.north west);
+    \coordinate (BL-TR) at ([xshift=-12mm,yshift=-12mm]current page.north east);
+    \coordinate (BL-BL) at ([xshift=12mm,yshift=12mm]current page.south west);
+    \coordinate (BL-BR) at ([xshift=-12mm,yshift=12mm]current page.south east);
+
+    % CROP MARKS
+    \draw[line width=0.5pt] ([xshift=-2mm]TL) -- ([xshift=-12mm]TL);
+    \draw[line width=0.5pt] ([yshift=2mm]TL) -- ([yshift=12mm]TL);
+    \draw[line width=0.5pt] ([xshift=2mm]TR) -- ([xshift=12mm]TR);
+    \draw[line width=0.5pt] ([yshift=2mm]TR) -- ([yshift=12mm]TR);
+    \draw[line width=0.5pt] ([xshift=-2mm]BL) -- ([xshift=-12mm]BL);
+    \draw[line width=0.5pt] ([yshift=-2mm]BL) -- ([yshift=-12mm]BL);
+    \draw[line width=0.5pt] ([xshift=2mm]BR) -- ([xshift=12mm]BR);
+    \draw[line width=0.5pt] ([yshift=-2mm]BR) -- ([yshift=-12mm]BR);
+
+    % BLEED MARKS
+    \draw[line width=0.5pt] ([xshift=-2mm]BL-TL) -- ([xshift=-12mm]BL-TL);
+    \draw[line width=0.5pt] ([yshift=2mm]BL-TL) -- ([yshift=12mm]BL-TL);
+    \draw[line width=0.5pt] ([xshift=2mm]BL-TR) -- ([xshift=12mm]BL-TR);
+    \draw[line width=0.5pt] ([yshift=2mm]BL-TR) -- ([yshift=12mm]BL-TR);
+    \draw[line width=0.5pt] ([xshift=-2mm]BL-BL) -- ([xshift=-12mm]BL-BL);
+    \draw[line width=0.5pt] ([yshift=-2mm]BL-BL) -- ([yshift=-12mm]BL-BL);
+    \draw[line width=0.5pt] ([xshift=2mm]BL-BR) -- ([xshift=12mm]BL-BR);
+    \draw[line width=0.5pt] ([yshift=-2mm]BL-BR) -- ([yshift=-12mm]BL-BR);
+
+    % REGISTRATION MARKS
+    \draw[line width=0.5pt] ([yshift=10mm]TC) circle (3mm);
+    \draw[line width=0.5pt] ([xshift=-5mm,yshift=10mm]TC) -- ([xshift=5mm,yshift=10mm]TC);
+    \draw[line width=0.5pt] ([yshift=10mm+5mm]TC) -- ([yshift=10mm-5mm]TC);
+    \draw[line width=0.5pt] ([yshift=-10mm]BC) circle (3mm);
+    \draw[line width=0.5pt] ([xshift=-5mm,yshift=-10mm]BC) -- ([xshift=5mm,yshift=-10mm]BC);
+    \draw[line width=0.5pt] ([yshift=-10mm+5mm]BC) -- ([yshift=-10mm-5mm]BC);
+    \draw[line width=0.5pt] ([xshift=-10mm]LC) circle (3mm);
+    \draw[line width=0.5pt] ([xshift=-10mm-5mm]LC) -- ([xshift=-10mm+5mm]LC);
+    \draw[line width=0.5pt] ([xshift=-10mm,yshift=5mm]LC) -- ([xshift=-10mm,yshift=-5mm]LC);
+    \draw[line width=0.5pt] ([xshift=10mm]RC) circle (3mm);
+    \draw[line width=0.5pt] ([xshift=10mm-5mm]RC) -- ([xshift=10mm+5mm]RC);
+    \draw[line width=0.5pt] ([xshift=10mm,yshift=5mm]RC) -- ([xshift=10mm,yshift=-5mm]RC);
+  \end{tikzpicture}%
+}
+
+% Import shared settings and styling
+\input{../../templates/preamble.tex}
+
+% Fix graphics paths
+\graphicspath{{./}{../../assets/logos/}{../../assets/icons/}{./processed/images/}}
+
+% Remove section numbering
+\setcounter{secnumdepth}{0}
+
+% Define yellow deadline box command
+\definecolor{DeadlineYellow}{RGB}{255,237,0}
+\newcommand{\yellowbox}[1]{%
+    \begin{center}
+    \begin{tikzpicture}
+        \node[fill=DeadlineYellow, draw=black, line width=1pt, inner sep=8pt, text width=0.9\linewidth, align=center] {%
+            \textbf{#1}%
+        };
+    \end{tikzpicture}
+    \end{center}
+}
+
+% Define red footer bar positioned absolutely at page bottom extending full width
+\newcommand{\redfooter}[1]{%
+    \AddToShipoutPictureFG*{%
+        \AtPageLowerLeft{%
+            \begin{tikzpicture}
+                % Red bar spans full paper width from absolute bottom
+                % Extends from y=0 (paper bottom) up 60mm
+                \fill[SissybarRed] (0,0) rectangle (244mm, 60mm);
+                % Text positioned in the red bar (40mm from bottom)
+                \node[text=black, text width=16cm, align=center] at (122mm, 40mm) {%
+                    \small #1%
+                };
+            \end{tikzpicture}%
+        }%
+    }%
+}
+
+\begin{document}
+
+% Header area and two-column layout combined
+\vspace{4pt}
+\noindent
+\begin{minipage}[t]{0.35\textwidth}
+    \begin{center}
+    \textbf{YAMAHA CUSTOM CLUB}\\
+    \textbf{FINLANDIN JÄSENLEHTI}
+    \end{center}
+
+    \vspace{8pt}
+
+    % Left column - publication info and contacts
+    \input{editorial_info.tex}
+\end{minipage}
+\hfill
+\begin{minipage}[t]{0.60\textwidth}
+    % Centered editorial title within right column, aligned with left header
+    \begin{center}
+    {\Large\dropshadow{Pääkirjoitus}}
+    \end{center}
+
+    \vspace{8pt}
+
+    % Right column - editorial content
+    \input{editorial_content.tex}
+\end{minipage}
+
+% Red footer bar with social media and contacts
+\redfooter{%
+    Sähköiset julkaisukanavamme - ota seuraaniaan!\\
+    Nettisivut: https://yccf.fi\\
+    Facebook-sivu: https://www.facebook.com/YamahaCustomClubFinland\\
+    Instagram: https://yccf.fi/instagram\\
+    Webmasterin e-posti: webmaster@yccf.fi\\
+    Jos unohdit salasanan: https://yccf.fi/salasana
+}
+
+\end{document}
