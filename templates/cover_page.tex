@@ -31,6 +31,26 @@
 \usepackage{graphicx}
 \usepackage[cmyk]{xcolor}
 
+%% Font Setup - Multiple fonts for cover text
+\usepackage{fontspec}
+% Berlin Sans FB Demi Bold for red tagline text
+\newfontfamily\berlinsans{Berlin Sans FB Demi}[
+    Path = /Users/superuser/Library/Fonts/,
+    Extension = .TTF,
+    UprightFont = BRLNSDB,
+    BoldFont = BRLNSDB,
+]
+% Helvetica Bold for white banner text (Arial substitute)
+\newfontfamily\arialfont{Helvetica}[
+    BoldFont = Helvetica-Bold,
+]
+\setmainfont{Berlin Sans FB Demi}[
+    Path = /Users/superuser/Library/Fonts/,
+    Extension = .TTF,
+    UprightFont = BRLNSDB,
+    BoldFont = BRLNSDB,
+]
+
 % Define colors
 \definecolor{SissybarRed}{RGB}{255,0,0}
 
@@ -112,29 +132,31 @@
                 \includegraphics[width=215mm]{kansilogo.pdf}%
             }%
             %
-            % 2a. Banner text - "YAMAHA CUSTOM CLUB..." (white text on left)
-            \put(25mm, 252mm){%
+            % 2a. Banner text - "YAMAHA CUSTOM CLUB..." (white text on left, Arial Bold)
+            \put(25mm, 253mm){%
+                \arialfont\bfseries%
                 \color{white}%
-                \fontsize{13}{15}\selectfont%
-                \textbf{YAMAHA CUSTOM CLUB FINLANDIN JÄSENLEHTI}%
+                \fontsize{15}{17}\selectfont%
+                YAMAHA CUSTOM CLUB FINLANDIN JÄSENLEHTI%
             }%
             %
-            % 2b. Issue number (white text on right)
-            \put(200mm, 252mm){%
+            % 2b. Issue number (white text on right, Arial Bold)
+            \put(200mm, 253.5mm){%
                 \begin{minipage}{25mm}
+                    \arialfont\bfseries%
                     \raggedleft%
                     \color{white}%
-                    \fontsize{13}{15}\selectfont%
-                    \textbf{\coverissue}%
+                    \fontsize{15}{17}\selectfont%
+                    \coverissue%
                 \end{minipage}%
             }%
             %
             % 3. Tagline (red text below banner, left side)
-            \put(25mm, 238mm){%
+            \put(25mm, 234mm){%
                 \begin{minipage}{150mm}
                     \raggedright%
                     \color{SissybarRed}%
-                    \fontsize{21}{24}\selectfont%
+                    \fontsize{23}{26}\selectfont%
                     \textbf{\covertagline}%
                 \end{minipage}%
             }%
