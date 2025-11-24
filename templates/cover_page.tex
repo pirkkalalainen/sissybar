@@ -1,0 +1,163 @@
+% cover_page.tex - Front cover template for magazine
+% This template creates the magazine cover with:
+% - Full-bleed background image
+% - Top banner with SISSYBAR logo
+% - Issue information and YCCF logo
+% - Tagline text
+% - Bottom caption text
+%
+% Usage:
+%   1. Copy this template and cover_content.tex to your issue directory
+%   2. Edit cover_content.tex with issue-specific text
+%   3. Place cover photo in processed/images/ (named in cover_content.tex)
+%   4. Compile this file to generate the cover page
+
+\documentclass[a4paper,12pt]{article}
+
+%% Page Setup with Bleed and Print Marks
+\usepackage[
+    paperwidth=244mm,
+    paperheight=331mm,
+    left=0mm,
+    right=0mm,
+    top=0mm,
+    bottom=0mm,
+    includeheadfoot
+]{geometry}
+
+%% TikZ for drawing crop marks and positioning elements
+\usepackage{tikz}
+\usepackage{eso-pic}
+\usepackage{graphicx}
+\usepackage[cmyk]{xcolor}
+
+% Define colors
+\definecolor{SissybarRed}{RGB}{255,0,0}
+
+% Add professional crop and bleed marks
+\AddToShipoutPictureBG{%
+  \begin{tikzpicture}[remember picture, overlay]
+    % Define trim box (A4 final size) - 17mm from page edge (12mm marks + 5mm bleed)
+    \coordinate (TL) at ([xshift=17mm,yshift=-17mm]current page.north west);
+    \coordinate (TR) at ([xshift=-17mm,yshift=-17mm]current page.north east);
+    \coordinate (BL) at ([xshift=17mm,yshift=17mm]current page.south west);
+    \coordinate (BR) at ([xshift=-17mm,yshift=17mm]current page.south east);
+    \coordinate (TC) at ([yshift=-17mm]current page.north);
+    \coordinate (BC) at ([yshift=17mm]current page.south);
+    \coordinate (LC) at ([xshift=17mm]current page.west);
+    \coordinate (RC) at ([xshift=-17mm]current page.east);
+
+    % Define bleed box (A4 + 5mm bleed) - 12mm from page edge
+    \coordinate (BL-TL) at ([xshift=12mm,yshift=-12mm]current page.north west);
+    \coordinate (BL-TR) at ([xshift=-12mm,yshift=-12mm]current page.north east);
+    \coordinate (BL-BL) at ([xshift=12mm,yshift=12mm]current page.south west);
+    \coordinate (BL-BR) at ([xshift=-12mm,yshift=12mm]current page.south east);
+
+    % CROP MARKS
+    \draw[line width=0.5pt] ([xshift=-2mm]TL) -- ([xshift=-12mm]TL);
+    \draw[line width=0.5pt] ([yshift=2mm]TL) -- ([yshift=12mm]TL);
+    \draw[line width=0.5pt] ([xshift=2mm]TR) -- ([xshift=12mm]TR);
+    \draw[line width=0.5pt] ([yshift=2mm]TR) -- ([yshift=12mm]TR);
+    \draw[line width=0.5pt] ([xshift=-2mm]BL) -- ([xshift=-12mm]BL);
+    \draw[line width=0.5pt] ([yshift=-2mm]BL) -- ([yshift=-12mm]BL);
+    \draw[line width=0.5pt] ([xshift=2mm]BR) -- ([xshift=12mm]BR);
+    \draw[line width=0.5pt] ([yshift=-2mm]BR) -- ([yshift=-12mm]BR);
+
+    % BLEED MARKS
+    \draw[line width=0.5pt] ([xshift=-2mm]BL-TL) -- ([xshift=-12mm]BL-TL);
+    \draw[line width=0.5pt] ([yshift=2mm]BL-TL) -- ([yshift=12mm]BL-TL);
+    \draw[line width=0.5pt] ([xshift=2mm]BL-TR) -- ([xshift=12mm]BL-TR);
+    \draw[line width=0.5pt] ([yshift=2mm]BL-TR) -- ([yshift=12mm]BL-TR);
+    \draw[line width=0.5pt] ([xshift=-2mm]BL-BL) -- ([xshift=-12mm]BL-BL);
+    \draw[line width=0.5pt] ([yshift=-2mm]BL-BL) -- ([yshift=-12mm]BL-BL);
+    \draw[line width=0.5pt] ([xshift=2mm]BL-BR) -- ([xshift=12mm]BL-BR);
+    \draw[line width=0.5pt] ([yshift=-2mm]BL-BR) -- ([yshift=-12mm]BL-BR);
+
+    % REGISTRATION MARKS
+    \draw[line width=0.5pt] ([yshift=10mm]TC) circle (3mm);
+    \draw[line width=0.5pt] ([xshift=-5mm,yshift=10mm]TC) -- ([xshift=5mm,yshift=10mm]TC);
+    \draw[line width=0.5pt] ([yshift=10mm+5mm]TC) -- ([yshift=10mm-5mm]TC);
+    \draw[line width=0.5pt] ([yshift=-10mm]BC) circle (3mm);
+    \draw[line width=0.5pt] ([xshift=-5mm,yshift=-10mm]BC) -- ([xshift=5mm,yshift=-10mm]BC);
+    \draw[line width=0.5pt] ([yshift=-10mm+5mm]BC) -- ([yshift=-10mm-5mm]BC);
+    \draw[line width=0.5pt] ([xshift=-10mm]LC) circle (3mm);
+    \draw[line width=0.5pt] ([xshift=-10mm-5mm]LC) -- ([xshift=-10mm+5mm]LC);
+    \draw[line width=0.5pt] ([xshift=-10mm,yshift=5mm]LC) -- ([xshift=-10mm,yshift=-5mm]LC);
+    \draw[line width=0.5pt] ([xshift=10mm]RC) circle (3mm);
+    \draw[line width=0.5pt] ([xshift=10mm-5mm]RC) -- ([xshift=10mm+5mm]RC);
+    \draw[line width=0.5pt] ([xshift=10mm,yshift=5mm]RC) -- ([xshift=10mm,yshift=-5mm]RC);
+  \end{tikzpicture}%
+}
+
+% Remove all page styling
+\pagestyle{empty}
+
+% Fix graphics paths
+\graphicspath{{./}{../../assets/logos/}{../../assets/icons/}{./processed/images/}}
+
+% Load editable content
+\input{cover_content.tex}
+
+% Command to build the cover page
+\newcommand{\buildcover}{%
+    \AddToShipoutPictureFG*{%
+        \AtPageLowerLeft{%
+            % 1. Background image - full bleed
+            \put(12mm, 12mm){%
+                \includegraphics[width=220mm,keepaspectratio=true]{\coverimage}%
+            }%
+            %
+            % 2. SISSYBAR logo (kansilogo) - centered, 215mm wide
+            \put(14.5mm, 222mm){%
+                \includegraphics[width=215mm]{kansilogo.pdf}%
+            }%
+            %
+            % 2a. Banner text - "YAMAHA CUSTOM CLUB..." (white text on left)
+            \put(25mm, 252mm){%
+                \color{white}%
+                \fontsize{13}{15}\selectfont%
+                \textbf{YAMAHA CUSTOM CLUB FINLANDIN JÄSENLEHTI}%
+            }%
+            %
+            % 2b. Issue number (white text on right)
+            \put(200mm, 252mm){%
+                \begin{minipage}{25mm}
+                    \raggedleft%
+                    \color{white}%
+                    \fontsize{13}{15}\selectfont%
+                    \textbf{\coverissue}%
+                \end{minipage}%
+            }%
+            %
+            % 3. Tagline (red text below banner, left side)
+            \put(25mm, 238mm){%
+                \begin{minipage}{150mm}
+                    \raggedright%
+                    \color{SissybarRed}%
+                    \fontsize{21}{24}\selectfont%
+                    \textbf{\covertagline}%
+                \end{minipage}%
+            }%
+            %
+            % 4. Bottom caption (white text at bottom)
+            \put(17mm, 35mm){%
+                \begin{minipage}{210mm}
+                    \centering%
+                    \color{white}%
+                    \fontsize{21}{24}\selectfont%
+                    \textbf{\coverbottom}%
+                \end{minipage}%
+            }%
+        }%
+    }%
+}
+
+\begin{document}
+
+% Build the cover page
+\buildcover
+
+% Empty page content - all content is placed via overlay
+\null
+
+\end{document}
